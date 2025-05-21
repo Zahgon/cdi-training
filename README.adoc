@@ -41,7 +41,7 @@ How to implement a factory to encapsulate the CDI programmatic bean lookup and h
 
 This repository provides the following pdf slides:
 
-* link:cdi-introduction-v1.1.pdf[CDI Introduction] +
+* link:cdi-introduction-v1.3.pdf[CDI Introduction] +
 An introduction to CDI.
 * link:cdi-specifications-v1.0.pdf[CDI Specs] +
 A theoretical insight into the CDI specs scopes, interceptors, decorators and events.
