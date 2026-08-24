@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <title layout:fragment="title">
+        Startup Event
+    </title>
+</head>
+
+<body>
+<div layout:fragment="body">
+    <div class="container-lg">
+        <div class="row mt-2">
+            <div class="col">
+                <div class="text-center">
+                    <h1>Startup Event</h1>
+                </div>
+
+                <hr />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <p>
+                    There are cases where we want to perform some actions after our main module has been started/initialized.
+                    For this reason it is a common pattern to implement a <code>ServletContextListener</code> which then fires synchronous or asynchronous events (depending on your needs) to internal observers.
+                </p>
+                <div class="row">
+                    <div class="col text-center my-3">
+                        <div>
+                            <img th:src="@{/resources/img/advanced/startup-event/use-case-main-initiated.svg}" height="100%"
+                                width="450px" alt="Startup Event initiated by main module" />
+                        </div>
+                    </div>
+                    <div class="col text-center my-3">
+                        <div>
+                            <img th:src="@{/resources/img/advanced/startup-event/use-case-module-initiated.svg}" height="100%"
+                                width="450px" alt="Startup Event initiated by modules" />
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <p class="font-weight-bold">Search the startup logs for the following logs:</p>
+
+                <pre>
+2021-02-08 07:58:32 INFO  StartupWebListener - Notifying Observers about startup
+2021-02-08 07:58:32 INFO  StartupObserver - Startup observed by StartupObserver
+2021-02-08 07:58:32 INFO  StartupWebListener - Notified Observers: StartupObserver
+                        </pre>
+
+                <hr class="my-3" />
+
+                <p>
+                    The <code>ServletContextListener</code> implementation is used to fire an custom event type
+                    when the servlet container is initialized, which means the container is up and running.
+                </p>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

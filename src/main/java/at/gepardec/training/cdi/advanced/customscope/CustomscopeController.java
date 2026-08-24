@@ -1,34 +1,34 @@
 package at.gepardec.training.cdi.advanced.customscope;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import jakarta.mvc.Controller;
-import jakarta.mvc.Models;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import at.gepardec.training.cdi.Models;
+import at.gepardec.training.cdi.MvcApplication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestScoped
-@Path("/advanced/customscope")
+@RequestScope
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/advanced/customscope")
+@Controller
 public class CustomscopeController {
 
     private static final int ITERATION_COUNT_WITHIN_SCOPE = 3;
 
-    @Inject
+    @Autowired
     private Models models;
 
-    @Inject
+    @Autowired
     private WithExecutionScopeService service;
 
-    @Controller
-    @GET
-    @Path("/")
+    @GetMapping({"", "/"})
     public String get(){
         models.put("data", buildModelData());
-        return "advanced/customscope.xhtml";
+        return "advanced/customscope";
     }
 
     private Map<String, List<String>> buildModelData() {

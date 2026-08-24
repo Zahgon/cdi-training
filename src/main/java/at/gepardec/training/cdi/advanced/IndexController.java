@@ -1,18 +1,19 @@
 package at.gepardec.training.cdi.advanced;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.mvc.Controller;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import at.gepardec.training.cdi.MvcApplication;
 
-@Path("/advanced/index")
-@RequestScoped
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
+
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/advanced/index")
+@RequestScope
+@Controller("advancedIndexController")
 public class IndexController {
 
-    @Path("/")
-    @GET
-    @Controller
+    @GetMapping({"", "/"})
     public String index() {
-        return "advanced/index.xhtml";
+        return "advanced/index";
     }
 }

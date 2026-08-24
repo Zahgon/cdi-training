@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <title layout:fragment="title">
+        Microprofile-Config Advanced
+    </title>
+</head>
+
+<body>
+<div layout:fragment="body">
+    <section>
+        <th:block th:replace="~{fragments/card :: card('injection', 'Injection', ~{::injectionBody}, ~{::injectionButtons}, null)}">
+            <th:block th:fragment="injectionBody"><p>
+                            In the first two examples you learn the basic of the basic when it comes to CDI and
+                            injection.
+                            <br />
+                            When you click one of the buttons you will experience an error, so analyze the package
+                            <code>at.gepardec.training.cdi.basic.inject</code> and find out what's going
+                            wrong.
+                        </p>
+
+                        <p>
+                            The specification for
+                            <a th:href="${cdiUri.specUri + '#injection'}" target="_blank">
+                                Dependency Injection
+                            </a>
+                        </p></th:block>
+            <th:block th:fragment="injectionButtons"><div class="d-flex justify-content-center flex-row my-2">
+                            <div class="ms-2 d-flex align-items-center">
+                                <th:block th:replace="~{fragments/button :: button('toInjectField', '/basic/inject/field', 'Field Example', null)}"></th:block>
+                            </div>
+                            <div class="ms-2 d-flex align-items-center">
+                                <th:block th:replace="~{fragments/button :: button('toInjectConstructor', '/basic/inject/constructor', 'Constructor Example', null)}"></th:block>
+                            </div>
+                        </div></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('scopes', 'Scopes', ~{::scopesBody}, ~{::scopesButtons}, null)}">
+            <th:block th:fragment="scopesBody"><p>
+                            In this example you will learn about CDI scopes, their impacts and proper usage
+                        </p>
+                        <ul>
+                            <li>
+                                <b>Basic Scopes:</b> Beans with scopes
+                            </li>
+                            <li>
+                                <b>Mixed Scopes:</b> Scoped beans which inject scoped beans
+                            </li>
+                            <li>
+                                <b>Dependent Scope:</b> The CDI default scope
+                            </li>
+                        </ul>
+
+                        <p>
+                            The specification for CDI
+                            <a th:href="${cdiUri.specUri + '#contexts'}"
+                                target="_blank">
+                                Scopes and Contexts
+                            </a>
+                        </p></th:block>
+            <th:block th:fragment="scopesButtons"><div class="d-flex justify-content-center flex-row my-2">
+                            <div class="ms-2 d-flex align-items-center">
+                                <th:block th:replace="~{fragments/button :: button('toScopesBasic', '/basic/scopes/basic', 'Basic Example', null)}"></th:block>
+                            </div>
+                            <div class="ms-2 d-flex align-items-center">
+                                <th:block th:replace="~{fragments/button :: button('toScopesMixed', '/basic/scopes/mixed', 'Mixed Example', null)}"></th:block>
+                            </div>
+                            <div class="ms-2 d-flex align-items-center">
+                                <th:block th:replace="~{fragments/button :: button('toScopesDependent', '/basic/scopes/dependent', 'Dependent Example', null)}"></th:block>
+                            </div>
+                        </div></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('initialization', 'Initialization', ~{::initializationBody}, ~{::initializationButtons}, null)}">
+            <th:block th:fragment="initializationBody"><p>
+                            CDI beans have a lifecycle and we can observe events when beans get created and
+                            destroyed.
+                        </p>
+                        <p>
+                            How to use <code>@PostConstruct</code> and <code>@PreDestroy</code> in CDI
+                            <a th:href="${cdiUri.jeeTutorialInitialization}"
+                                target="_blank">
+                                [[${cdiUri.jeeTutorialInitialization}]]
+                            </a>
+                        </p></th:block>
+            <th:block th:fragment="initializationButtons"><th:block th:replace="~{fragments/button :: button('toInitialization', '/basic/initialization', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('qualifiers', 'Qualifiers', ~{::qualifiersBody}, ~{::qualifiersButtons}, null)}">
+            <th:block th:fragment="qualifiersBody"><p>
+                            When we have multiple implementations for an CDI bean (interface), then we need to
+                            qualify
+                            them, otherwise how is the CDI container supposed to know what implementation to
+                            provide?
+                        </p>
+                        <p>
+                            The specification for CDI Qualifiers
+                            <a th:href="${cdiUri.specUri + '#qualifiers'}"
+                                target="_blank">
+                                Qualifiers
+                            </a>
+                        </p></th:block>
+            <th:block th:fragment="qualifiersButtons"><th:block th:replace="~{fragments/button :: button('toqualifiers', '/basic/qualifiers', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('producers', 'Producers', ~{::producersBody}, ~{::producersButtons}, null)}">
+            <th:block th:fragment="producersBody"><p>
+                            Usually the CDI container creates the CDI bean instance via the empty constructor, but
+                            what if the instantiation of the instance is not that simple?
+                        </p>
+                        <p>
+                            The specification for CDI
+                            <a th:href="${cdiUri.specUri + '#producer_method'}"
+                                target="_blank">
+                                Producer Methods
+                            </a>
+                            and
+                            <a th:href="${cdiUri.specUri + '#producer_field'}"
+                                target="_blank">
+                                Producer Fields
+                            </a>
+                        </p></th:block>
+            <th:block th:fragment="producersButtons"><th:block th:replace="~{fragments/button :: button('toProducers', '/basic/producers', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('interceptors', 'Interceptors', ~{::interceptorsBody}, ~{::interceptorsButtons}, null)}">
+            <th:block th:fragment="interceptorsBody"><p>
+                            Aspects in CDI are implemented via interceptors and applied via interceptor binding
+                            annotations, for instance <code>@Transactional</code>.
+                        </p>
+
+                        <p>
+                            The specification for CDI
+                            <a th:href="${cdiUri.specUri + '#interceptors'}"
+                                target="_blank">
+                                Interceptors
+                            </a>
+                        </p></th:block>
+            <th:block th:fragment="interceptorsButtons"><th:block th:replace="~{fragments/button :: button('toInterceptors', '/basic/interceptors', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('decorators', 'Decorators', ~{::decoratorsBody}, ~{::decoratorsButtons}, null)}">
+            <th:block th:fragment="decoratorsBody"><p>
+                            CDI interceptors are generic and are applied via annotations, but CDI decorators
+                            implement
+                            the CDI bean type and are applied in a de-coupled fashion.
+                        </p>
+
+                        <p>
+                            The specification for CDI
+                            <a th:href="${cdiUri.specUri + '#decorators'}" target="_blank">
+                                Decorators
+                            </a>
+                        </p></th:block>
+            <th:block th:fragment="decoratorsButtons"><th:block th:replace="~{fragments/button :: button('toDecorators', '/basic/decorators', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('events', 'Events', ~{::eventsBody}, ~{::eventsButtons}, null)}">
+            <th:block th:fragment="eventsBody"><p>
+                            CDI provides an event system which can be used to couple parts of the application
+                            in a de-coupled fashion.
+                        </p>
+
+                        <p>
+                            The specification for CDI
+                            <a th:href="${cdiUri.specUri + '#events'}" target="_blank">
+                                Events
+                            </a>
+                        </p></th:block>
+            <th:block th:fragment="eventsButtons"><th:block th:replace="~{fragments/button :: button('toEvents', '/basic/events', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+</div>
+</body>
+</html>

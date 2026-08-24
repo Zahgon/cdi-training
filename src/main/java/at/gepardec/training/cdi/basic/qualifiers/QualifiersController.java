@@ -1,38 +1,37 @@
 package at.gepardec.training.cdi.basic.qualifiers;
 
+import at.gepardec.training.cdi.Models;
+import at.gepardec.training.cdi.MvcApplication;
 import at.gepardec.training.cdi.Util;
-
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import jakarta.mvc.Controller;
-import jakarta.mvc.Models;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
 /**
  * Implement a CDI qualifier ensure tha the injected field 'rectangle' is a RectangleShape instance.
  * Don't change the type of the fields.
  */
-@Path("/basic/qualifiers")
-@RequestScoped
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/basic/qualifiers")
+@RequestScope
 @Controller
 public class QualifiersController {
 
-    @Inject
+    @Autowired
     private Models model;
 
-    @Inject
+    @Autowired
     private Shape circle;
 
-    @Inject
+    @Autowired
     private Shape rectangle;
 
-    @GET
-    @Path("/")
+    @GetMapping({"", "/"})
     public String get() {
         model.put("circle", Util.nameWithoutProxy(circle));
         model.put("rectangle", Util.nameWithoutProxy(rectangle));
 
-        return "basic/qualifiers.xhtml";
+        return "basic/qualifiers";
     }
 }

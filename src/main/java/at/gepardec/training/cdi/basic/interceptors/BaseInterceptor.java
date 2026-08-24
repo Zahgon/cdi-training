@@ -1,19 +1,19 @@
 package at.gepardec.training.cdi.basic.interceptors;
 
+import at.gepardec.training.cdi.Util;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
-
-import jakarta.inject.Inject;
-import jakarta.interceptor.InvocationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class BaseInterceptor {
 
-    @Inject
+    @Autowired
     protected Logger logger;
 
-    protected Object logAndProceed(final InvocationContext ic) throws Exception {
-        String interceptedMethodInfo = ic.getTarget().getClass().getSuperclass().getSimpleName() + "." + ic.getMethod().getName() + "(...)";
+    protected Object logAndProceed(final ProceedingJoinPoint joinPoint) throws Throwable {
+        String interceptedMethodInfo = Util.nameWithoutProxy(joinPoint.getTarget()) + "." + joinPoint.getSignature().getName() + "(...)";
         logger.info("start  -> " + interceptedMethodInfo);
-        final Object result = ic.proceed();
+        final Object result = joinPoint.proceed();
         logger.info("end  -> " + interceptedMethodInfo);
         return result;
     }

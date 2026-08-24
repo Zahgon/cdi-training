@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<!--@elvariable id="circle" type="java.util.List"-->
+<!--@elvariable id="rectangle" type="java.util.List"-->
+
+<head>
+    <title layout:fragment="title">
+        Qualifiers
+    </title>
+</head>
+
+<body>
+<div layout:fragment="body">
+    <div class="container-lg">
+        <div class="row my-2">
+            <div class="col">
+                <div class="text-center">
+                    <h1>Qualifiers</h1>
+                </div>
+            </div>
+
+            <hr class="my-3" />
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <p>
+                    The specification for CDI
+                    <a th:href="${cdiUri.specUri + '#qualifiers'}"
+                        target="_blank">
+                        Qualifiers
+                    </a>
+                </p>
+
+                <p>
+                    Usually in CDI we inject the interface type of a CDI Bean and not the implementation type,
+                    so we need to tell CDI what implementation instance we want to have injected if there are
+                    multiple implementations available.
+                    CDI uses type safe qualifiers which are implemented as annotations for the selection of the
+                    implementation.
+                    EJBs for instance use string names for the implementation selection which is error prone and
+                    not
+                    type safe.
+                </p>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <h5>
+                    Your Task:
+                </h5>
+
+                <p>
+                    Fix the injection of the <code>rectangle</code> field in the
+                    <code>at.gepardec.training.cdi.basic.qualifiers.QualifiersController</code>
+                    by using CDI qualifiers.
+                </p>
+
+                <p>
+                    When your qualifiers are used properly, then you should see the values changing as
+                    described.
+                </p>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <div class="row my-1">
+                    <div class="col-6">
+                        I should still be a <code>Circle</code>
+                    </div>
+                    <div class="col-6 text-center">
+                        <span class="font-weight-bold" th:text="${circle}"></span>
+                    </div>
+                </div>
+
+                <div class="row my-1">
+                    <div class="col-6">
+                        I should now be a <code>Rectangle</code>
+                    </div>
+                    <div class="col-6 text-center">
+                        <span class="font-weight-bold" th:text="${rectangle}"></span>
+                    </div>
+                </div>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

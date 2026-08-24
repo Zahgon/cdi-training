@@ -1,24 +1,22 @@
 package at.gepardec.training.cdi;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.mvc.Controller;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
-@Path("/")
-@RequestScoped
 @Controller
+@RequestScope
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH)
 public class WelcomeController {
 
-    @Path("/")
-    @GET
+    @GetMapping({"", "/"})
     public String get() {
         return welcome();
     }
 
-    @Path("/welcome")
-    @GET
+    @GetMapping("/welcome")
     public String welcome() {
-        return "welcome.xhtml";
+        return "welcome";
     }
 }

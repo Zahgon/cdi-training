@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<!--@elvariable id="result" type="java.lang.String"-->
+
+<head>
+    <title layout:fragment="title">
+        Instance&lt;T&gt;
+    </title>
+</head>
+
+<body>
+<div layout:fragment="body">
+    <div class="container-lg">
+        <div class="row my-2">
+            <div class="col">
+                <div class="text-center">
+                    <h1>Instance&lt;T&gt;</h1>
+                </div>
+            </div>
+
+            <hr class="my-3"/>
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <p>
+                    The specification for the
+                    <a
+                            th:href="${cdiUri.specUri + '#programmatic_lookup'}" target="_blank">
+                        programmatic lookup
+                    </a>
+                    in CDI.
+                </p>
+
+                <hr class="mt-3 mb-1"/>
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <h4>Situation</h4>
+                <p>
+                    An application needs o be able to dynamically lookup a CDI Bean, depending on a dynamic runtime state.
+                </p>
+
+                <div class="text-center">
+                    <img th:src="@{/resources/img/advanced/instance/problem.svg}" height="200px"
+                         width="100%" alt="Startup Event"/>
+                </div>
+
+                <hr class="my-3"/>
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <h4>Problem</h4>
+                <p>
+                    CDI injections are static and defined during compile-time and cannot be changed during runtime. Dynamic injections are not supported in CDI.
+                </p>
+
+                <hr class="my-3"/>
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <h4>Solution</h4>
+                <p>
+                    <code>Instance&lt;T&gt;</code> is a generic typeable CDI Bean which is typed with the bean type it provides dynamic access to.
+                    The generic type variable can be used to filter bean-types which are in the same type-hierarchy.
+                </p>
+
+                <div class="text-center">
+                    <img th:src="@{/resources/img/advanced/instance/solution.svg}" height="350px"
+                         width="100%" alt="Startup Event"/>
+                </div>
+
+                <hr class="my-3"/>
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="row">
+                <div class="col text-center">
+                    <span class="h4">Resolved Beans via Instance&lt;T&gt;</span>
+                </div>
+            </div>
+            <hr class="my-3"/>
+            <div class="col">
+                <th:block th:each="entry : ${data}">
+                    <div class="row">
+                        <div class="col-4">
+                            <code th:text="${entry.key}"></code>
+                        </div>
+                        <div class="col">
+                            &#8594;
+                        </div>
+                        <div class="col-6">
+                            <th:block th:each="name : ${entry.value}">
+                                <div class="row">
+                                    <code th:text="${name}"></code>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <hr class="my-3"/>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

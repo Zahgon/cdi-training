@@ -1,6 +1,7 @@
 package at.gepardec.training.cdi.advanced.registrar;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import org.springframework.stereotype.Component;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +10,7 @@ import java.util.Set;
  * This registrar holds the state of event executions and is accessed concurrently.
  * Because of the concurrent access we need to ensure proper synchronization.
  */
-@ApplicationScoped
+@Component
 public class EventResultRegistrar {
 
     private final Set<String> successEvents = Collections.synchronizedSet(new HashSet<>());

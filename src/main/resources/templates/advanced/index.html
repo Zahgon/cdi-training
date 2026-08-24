@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <title layout:fragment="title">
+        Advanced
+    </title>
+</head>
+
+<body>
+<div layout:fragment="body">
+    <section>
+        <th:block th:replace="~{fragments/card :: card('concurrency', 'Concurrency', ~{::concurrencyBody}, ~{::concurrencyButtons}, null)}">
+            <th:block th:fragment="concurrencyBody"><p>
+                            When using Concurrency in CDI you will faces problems with scopes others than
+                            <code>@Dependent</code> and <code>@ApplicationScoped</code>
+                        </p>
+
+                        <div class="text-center">
+                            <img th:src="@{/resources/img/advanced/concurrency/intro.svg}" height="200px"
+                                 width="100%" alt="Concurrency"/>
+                        </div></th:block>
+            <th:block th:fragment="concurrencyButtons"><th:block th:replace="~{fragments/button :: button('toConcurrency', '/advanced/concurrency', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('dynamicDefault', 'Dynamic Default', ~{::dynamicDefaultBody}, ~{::dynamicDefaultButtons}, null)}">
+            <th:block th:fragment="dynamicDefaultBody"><p>
+                            How to realize to be able to define a dynamic default implementation in CDI?
+                        </p>
+
+                        <div class="text-center">
+                            <img th:src="@{/resources/img/advanced/dynamic-default/intro.svg}" height="120px"
+                                 width="100%" alt="Dynamic Default"/>
+                        </div></th:block>
+            <th:block th:fragment="dynamicDefaultButtons"><th:block th:replace="~{fragments/button :: button('toDynamicDefault', '/advanced/dynamic-default', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('alternative', 'Alternatives', ~{::alternativeBody}, ~{::alternativeButtons}, null)}">
+            <th:block th:fragment="alternativeBody"><p>
+                            Sometimes we need to provide an alternative implementation for a CDI bean, maybe for
+                            development and/or tests
+                        </p>
+
+                        <div class="text-center">
+                            <img th:src="@{/resources/img/advanced/alternative/intro.svg}" height="120px"
+                                 width="100%" alt="Alternative"/>
+                        </div></th:block>
+            <th:block th:fragment="alternativeButtons"><th:block th:replace="~{fragments/button :: button('toAlternatives', '/advanced/alternatives', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('specializes', 'Specializes', ~{::specializesBody}, ~{::specializesButtons}, null)}">
+            <th:block th:fragment="specializesBody"><p>
+                            Sometimes we need to completely overwrite a CDI bean, maybe a configuration producer
+                            bean
+                            of a framework where we need to specialize the configuration
+                        </p>
+
+                        <div class="text-center">
+                            <img th:src="@{/resources/img/advanced/specializes/intro.svg}" height="120px"
+                                 width="100%" alt="Specializes"/>
+                        </div></th:block>
+            <th:block th:fragment="specializesButtons"><th:block th:replace="~{fragments/button :: button('toSpecializes', '/advanced/specializes', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('registrar', 'Registrar', ~{::registrarBody}, ~{::registrarButtons}, null)}">
+            <th:block th:fragment="registrarBody"><p>
+                            Registrars are CDI beans used to couple parts of an application, e.g for
+                            asynchronous
+                            executions where we need to capture the results and provide it to other CDI beans
+                            when available
+                        </p>
+
+                        <div class="text-center">
+                            <img th:src="@{/resources/img/advanced/registrar/intro.svg}" height="200px"
+                                 width="100%" alt="Registrar"/>
+                        </div></th:block>
+            <th:block th:fragment="registrarButtons"><th:block th:replace="~{fragments/button :: button('toRegistrar', '/advanced/registrar', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('startupEvent', 'Startup Event', ~{::startupEventBody}, ~{::startupEventButtons}, null)}">
+            <th:block th:fragment="startupEventBody"><p>
+                            CDI events are used to couple parts of an application in a de-coupled manner and to
+                            notify
+                            observers about events.
+                        </p>
+
+                        <div class="text-center">
+                            <img th:src="@{/resources/img/advanced/startup-event/intro.svg}" height="250px"
+                                 width="100%" alt="Startup Event"/>
+                        </div></th:block>
+            <th:block th:fragment="startupEventButtons"><th:block th:replace="~{fragments/button :: button('toStartEvent', '/advanced/startup-event', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('instance', 'Instance&lt;T&gt;', ~{::instanceBody}, ~{::instanceButtons}, null)}">
+            <th:block th:fragment="instanceBody"><p>
+                            Instance&lt;T&gt; is the CDI API which is used to programmatically lookup CDI Beans.
+                        </p>
+
+                        <div class="text-center">
+                            <img th:src="@{/resources/img/advanced/instance/solution.svg}" height="250px"
+                                 width="100%" alt="Startup Event"/>
+                        </div></th:block>
+            <th:block th:fragment="instanceButtons"><th:block th:replace="~{fragments/button :: button('toInstance', '/advanced/instance', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('lookupFactory', 'Lookup Factory', ~{::lookupFactoryBody}, ~{::lookupFactoryButtons}, null)}">
+            <th:block th:fragment="lookupFactoryBody"><p>
+                            When CDI beans have to be selected dynamically during runtime, then we can implement
+                            a
+                            factory
+                            which encapsulates the interaction with the CDI container.
+                        </p></th:block>
+            <th:block th:fragment="lookupFactoryButtons"><th:block th:replace="~{fragments/button :: button('toLookupFactory', '/advanced/lookup-factory/A', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+
+    <section>
+        <th:block th:replace="~{fragments/card :: card('customScope', 'Custom Scope', ~{::customScopeBody}, ~{::customScopeButtons}, null)}">
+            <th:block th:fragment="customScopeBody"><p>
+                            CDI proivdes built-in scopes, but we can implement our own scope which lifecycle we can control.
+                        </p>
+
+                        <div class="text-center">
+                            <img th:src="@{/resources/img/advanced/customscope/class-diagram-scope-extension.svg}" height="350px"
+                                 width="100%" alt="Class diagram CDI Scope/Context/Extension"/>
+                        </div></th:block>
+            <th:block th:fragment="customScopeButtons"><th:block th:replace="~{fragments/button :: button('tocCustomScope', '/advanced/customscope', 'Example', null)}"></th:block></th:block>
+        </th:block>
+    </section>
+</div>
+</body>
+</html>

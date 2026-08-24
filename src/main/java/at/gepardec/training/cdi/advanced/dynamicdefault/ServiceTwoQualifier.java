@@ -1,6 +1,7 @@
 package at.gepardec.training.cdi.advanced.dynamicdefault;
 
-import jakarta.inject.Qualifier;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import java.lang.annotation.*;
 
 @Inherited

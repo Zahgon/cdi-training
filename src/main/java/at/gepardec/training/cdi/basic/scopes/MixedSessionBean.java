@@ -1,13 +1,16 @@
 package at.gepardec.training.cdi.basic.scopes;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
+
 import java.io.Serializable;
 
-@RequestScoped
+@Component
+@RequestScope
 public class MixedSessionBean implements Serializable {
 
-    @Inject
+    @Autowired
     private MixedRequestBean mixedRequestBean;
 
     private int value = 0;
@@ -20,6 +23,5 @@ public class MixedSessionBean implements Serializable {
         return ++value;
     }
 }
-
 
 

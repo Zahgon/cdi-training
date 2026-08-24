@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      th:with="verticallyCentered=false">
+
+<!--@elvariable id="controllerResult" type="java.lang.String"-->
+<!--@elvariable id="concurrentResult" type="java.lang.String"-->
+
+<head>
+    <title layout:fragment="title">
+        Concurrency
+    </title>
+</head>
+
+<body>
+<div layout:fragment="body">
+    <div class="container-lg">
+        <div class="row my-2">
+            <div class="col">
+                <div class="text-center">
+                    <h1>Concurrency</h1>
+                </div>
+            </div>
+
+            <hr class="my-3" />
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <h4>Situation</h4>
+                <p>
+                    A web application executes a workflow within an action method of a request concurrently,
+                    whereby the concurrent execution relies on data provided by request scoped CDI
+                    Beans. The concurrent execution is started and the results are joined within the action
+                    method.
+                </p>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <h4>Problem</h4>
+                <p>
+                    Concurrency in CDI is a little bit difficult, because only <code>@ApplicationScoped</code>
+                    and <code>@Dependent</code> scoped beans are available on other threads. But in our use case
+                    the <code>Service</code> beans accesses the request scoped <code>Context</code> bean which
+                    accesses the request scoped <code>HttpServletRequest</code> bean which will fail with a
+                    <code>ContextNotActiveException</code>.
+                    The exception is thrown due to the fact that the request scoped CDI Bean is wrapped by a CDI
+                    Proxy which wants to retrieve the actual instance from the request scope which is not
+                    related to the current thread.
+                </p>
+
+                <div class="text-center m-2">
+                    <img th:src="@{/resources/img/advanced/concurrency/problem.svg}" height="250px"
+                        width="100%" alt="Concurrency Problem" />
+                </div>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <h4>Solution</h4>
+                <p>
+                    Instead putting the <code>Context</code> in the request scope, we
+                    implement a CDI Producer Bean which is in the request scope and initializes the <code>Context</code>
+                    in its <code>@PostConstruct</code> init method and sets the instance on a member variable.
+                    This makes the state of the <code>Context</code> instance de facto request scoped.
+                    The CDI Producer additionally implements a producer method which produces the
+                    <code>Context</code> in the dependent scope, which means the instance is fully initialized
+                    in the <code>Service</code> without a wrapping proxy.
+                </p>
+
+                <p>
+                    See the package <code>at.gepardec.training.cdi.advanced.concurrency.*</code> for the relevant
+                    classes. Especially take a look at the comments.
+                </p>
+
+                <div class="text-center m-2">
+                    <img th:src="@{/resources/img/advanced/concurrency/solution.svg}" height="250px"
+                        width="100%" alt="Concurrency Solution" />
+                </div>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+
+        <div id="results" class="row my-2">
+            <div class="col">
+                <div class="row m-1">
+                    <div class="col-6">
+                        Controller Thread
+                    </div>
+                    <div class="col-6 text-center">
+                        <span class="font-weight-bold" th:text="${controllerResult}"></span>
+                    </div>
+                </div>
+
+                <div class="row m-1">
+                    <div class="col-6">
+                        Concurrent Thread
+                    </div>
+                    <div class="col-6 text-center">
+                        <span class="font-weight-bold" th:text="${concurrentResult}"></span>
+                    </div>
+                </div>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

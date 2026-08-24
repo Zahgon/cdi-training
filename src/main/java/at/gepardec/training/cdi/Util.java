@@ -24,7 +24,11 @@ public class Util {
         return cleanupProxyInClassname(object.getClass().getSimpleName());
     }
 
+    /**
+     * Strips the proxy marker a container adds to the class name of a scoped bean.
+     * Weld appended {@code $Proxy$_$$_WeldClientProxy}, Spring appends {@code $$SpringCGLIB$$<n>}.
+     */
     private static String cleanupProxyInClassname(String classname) {
-        return classname.replace("$Proxy$_$$_WeldClientProxy", "");
+        return classname.replaceAll("\\$\\$SpringCGLIB\\$\\$.*$", "");
     }
 }

@@ -1,53 +1,52 @@
 package at.gepardec.training.cdi.advanced.registrar;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.enterprise.event.Event;
-import jakarta.inject.Inject;
-import jakarta.mvc.Controller;
-import jakarta.mvc.Models;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import at.gepardec.training.cdi.Models;
+import at.gepardec.training.cdi.MvcApplication;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
+
 import java.util.UUID;
 
 /**
  * this controller fires the asynchronous events which results we need to capture.
  */
-@Path("/advanced/registrar")
-@RequestScoped
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/advanced/registrar")
+@RequestScope
 @Controller
 public class RegistrarController {
 
-    @Inject
+    @Autowired
     private EventResultRegistrar eventResultRegistrar;
 
-    @Inject
-    private Event<EventData> event;
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
-    @Inject
+    @Autowired
     private Models model;
 
-    @Path("/")
-    @GET
+    @GetMapping({"", "/"})
     public String get() {
         fillData();
 
-        return "advanced/registrar.xhtml";
+        return "advanced/registrar";
     }
 
-    @Path("/clear")
-    @GET
+    @GetMapping("/clear")
     public String clear() {
         eventResultRegistrar.clear();
 
         return get();
     }
 
-    @Path("/fire/{fail}")
-    @PathParam("fail")
-    @GET
-    public String fire(@PathParam("fail") String fail) {
-        event.fireAsync(EventData.of(UUID.randomUUID().toString(), "failedEvent".equals(fail)));
+    @GetMapping("/fire/{fail}")
+    public String fire(@PathVariable(name = "fail", required = false) String fail) {
+        publisher.publishEvent(EventData.of(UUID.randomUUID().toString(), "failedEvent".equals(fail)));
 
         return get();
     }

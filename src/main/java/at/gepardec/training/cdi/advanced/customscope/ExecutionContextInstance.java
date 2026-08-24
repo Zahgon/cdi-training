@@ -1,31 +1,36 @@
 package at.gepardec.training.cdi.advanced.customscope;
 
-import jakarta.enterprise.context.spi.Contextual;
-import jakarta.enterprise.context.spi.CreationalContext;
-
 /**
- * This model holds the instance CDI related instances, so we can properly destroy the CDI bean wrapping the acual instance.
- * @param <T> the instance type
+ * This model holds the instance and the framework related destruction hook, so we can properly destroy the bean wrapping
+ * the acual instance.
+ * <p>
+ * With CDI the {@code Contextual} together with its {@code CreationalContext} was needed to destroy a contextual
+ * instance. Spring instead hands the scope a {@link Runnable} through
+ * {@link org.springframework.beans.factory.config.Scope#registerDestructionCallback(String, Runnable)}, so this holder
+ * keeps that callback. Both fields are mutable on purpose: Spring registers the destruction callback from inside the
+ * {@code ObjectFactory}, that is while the instance is still being created and before the factory has returned it.
  */
-public class ExecutionContextInstance<T> {
+public class ExecutionContextInstance {
 
-    private final T instance;
+    private Object instance;
 
-    private final CreationalContext<T> creationalContext;
+    private Runnable destructionCallback;
 
-    private final Contextual<T> contextual;
-
-    public ExecutionContextInstance(T instance, CreationalContext<T> creationalContext, Contextual<T> contextual) {
-        this.instance = instance;
-        this.creationalContext = creationalContext;
-        this.contextual = contextual;
+    public void destroy() {
+        if (destructionCallback != null) {
+            destructionCallback.run();
+        }
     }
 
-    public void destroy(){
-        contextual.destroy(instance, creationalContext);
-    }
-
-    public T getInstance() {
+    public Object getInstance() {
         return instance;
+    }
+
+    void setInstance(Object instance) {
+        this.instance = instance;
+    }
+
+    void setDestructionCallback(Runnable destructionCallback) {
+        this.destructionCallback = destructionCallback;
     }
 }

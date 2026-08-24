@@ -1,49 +1,51 @@
 package at.gepardec.training.cdi.advanced.dynamicdefault;
 
+import at.gepardec.training.cdi.Models;
+import at.gepardec.training.cdi.MvcApplication;
+
 import org.slf4j.Logger;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.enterprise.inject.Default;
-import jakarta.inject.Inject;
-import jakarta.mvc.Controller;
-import jakarta.mvc.Models;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-
-@Path("/advanced/dynamic-default")
-@RequestScoped
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/advanced/dynamic-default")
+@RequestScope
 @Controller
 public class DynamicDefaultController {
 
-    @Inject
+    @Autowired
     private ServiceProducer serviceProducer;
 
-    @Inject
-    @Default // Without '@Default' you would actually declare '@Any' which means give me any bean implementation
-    private Service service;
+    /**
+     * The provider is resolved after the implementation type has been switched, otherwise the
+     * switch would have no effect within the very same request.
+     */
+    @Autowired
+    // Without '@Default' you would actually declare '@Any' which means give me any bean implementation
+    private ObjectProvider<Service> service;
 
-    @Inject
+    @Autowired
     private Logger log;
 
-    @Inject
+    @Autowired
     private Models model;
 
-    @Path("/")
-    @GET
+    @GetMapping({"", "/"})
     public String get() {
         return get(null);
     }
 
-    @Path("/{type}")
-    @PathParam("type")
-    @GET
-    public String get(@PathParam("type") String type) {
+    @GetMapping("/{type}")
+    public String get(@PathVariable(name = "type", required = false) String type) {
         if (type != null && !type.isEmpty()) {
             log.info("Switching implementation from '" + serviceProducer.getImplementationType() + "' -> '" + type + "'");
             serviceProducer.setImplementationType(type);
         }
-        model.put("result", service.execute());
-        return "advanced/dynamic-default.xhtml";
+        model.put("result", service.getObject().execute());
+        return "advanced/dynamic-default";
     }
 }

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<!--@elvariable id="successEvents" type="java.util.List"-->
+<!--@elvariable id="failedEvents" type="java.util.List"-->
+
+<head>
+    <title layout:fragment="title">
+        Registrar
+    </title>
+</head>
+
+<body>
+<div layout:fragment="body">
+    <div class="container-lg">
+        <div class="row my-2">
+            <div class="col">
+                <div class="text-center">
+                    <h1>Registrar (Pattern)</h1>
+                </div>
+            </div>
+
+            <hr class="my-3" />
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <p>
+                    Sometime it is necessary to capture the result of asynchronous invocations which are not
+                    supposed to block the request and don't provide any useful information for the users but the
+                    application needs to know the result of the invocation.
+                </p>
+                <p>
+                    A use-case would be the asynchronous publishing of a page access or action invocation which
+                    don't concern the users, but the application is supposed to log the results for monitoring
+                    purposes.
+                </p>
+
+                <div class="text-center m-2">
+                    <img th:src="@{/resources/img/advanced/registrar/use-case.svg}" height="300px"
+                        width="100%" alt="Registrar" />
+                </div>
+
+                <p>
+                    See the package <code>at.gepardec.training.cdi.advanced.registrar.*</code> for the relevant
+                    classes.
+                    Especially take a look at the comments.
+                </p>
+
+                <hr class="my-3" />
+
+                <div class="d-flex justify-content-center flex-row my-2">
+                    <div class="ms-2 d-flex align-items-center">
+                        <th:block th:replace="~{fragments/button :: button('refresh', '/advanced/registrar', 'Refresh', null)}"></th:block>
+                    </div>
+                    <div class="ms-2 d-flex align-items-center">
+                        <th:block th:replace="~{fragments/button :: button('fireSuccessEvent', '/advanced/registrar/fire/successEvent', 'Success Event', null)}"></th:block>
+                    </div>
+                    <div class="ms-2 d-flex align-items-center">
+                        <th:block th:replace="~{fragments/button :: button('fireFailEvent', '/advanced/registrar/fire/failedEvent', 'Fail Event', null)}"></th:block>
+                    </div>
+                    <div class="ms-2 d-flex align-items-center">
+                        <th:block th:replace="~{fragments/button :: button('clear', '/advanced/registrar/clear', 'Clear', null)}"></th:block>
+                    </div>
+                </div>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <div class="row m-1">
+                    <div class="col-sm text-center text-sm-right mr-sm-1">
+                        Success Events
+                    </div>
+                    <div class="col-sm text-center text-sm-left ml-sm-1">
+                        <th:block th:each="event : ${successEvents}">
+                            <span class="font-weight-bold" th:text="${event}"></span>
+                            <br />
+                        </th:block>
+                    </div>
+                </div>
+
+                <hr class="my-3" />
+
+                <div class="row m-1">
+                    <div class="col-sm text-center text-sm-right mr-sm-1">
+                        Failed Events
+                    </div>
+                    <div class="col-sm text-center text-sm-left ml-sm-1">
+                        <th:block th:each="event : ${failedEvents}">
+                            <span class="font-weight-bold" th:text="${event}"></span>
+                            <br />
+                        </th:block>
+                    </div>
+                </div>
+
+                <hr class="my-3" />
+
+                <div class="text-center font-weight-bold">
+                    <p>
+                        This problem can solved by providing a registrar CDI Bean in the application or session
+                        scope. The futures or asynchronous results are registered on the registrar which can be
+                        accessed by other parts of the application.
+                    </p>
+                </div>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

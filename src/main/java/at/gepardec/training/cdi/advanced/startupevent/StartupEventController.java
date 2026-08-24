@@ -1,18 +1,19 @@
 package at.gepardec.training.cdi.advanced.startupevent;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.mvc.Controller;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import at.gepardec.training.cdi.MvcApplication;
 
-@Path("/advanced/startup-event")
-@RequestScoped
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
+
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/advanced/startup-event")
+@RequestScope
 @Controller
 public class StartupEventController {
 
-    @Path("/")
-    @GET
+    @GetMapping({"", "/"})
     public String get() {
-        return "advanced/startup-event.xhtml";
+        return "advanced/startup-event";
     }
 }

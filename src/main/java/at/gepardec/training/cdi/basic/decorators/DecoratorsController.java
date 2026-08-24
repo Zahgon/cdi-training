@@ -1,24 +1,24 @@
 package at.gepardec.training.cdi.basic.decorators;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import jakarta.mvc.Controller;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import at.gepardec.training.cdi.MvcApplication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
-@Path("/basic/decorators")
-@RequestScoped
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/basic/decorators")
+@RequestScope
 @Controller
 public class DecoratorsController {
 
-    @Inject
+    @Autowired
     private ServiceApi service;
 
-    @Path("/")
-    @GET
+    @GetMapping({"", "/"})
     public String get() {
         service.decorated();
         service.nonDecorated();
-        return "basic/decorators.xhtml";
+        return "basic/decorators";
     }
 }

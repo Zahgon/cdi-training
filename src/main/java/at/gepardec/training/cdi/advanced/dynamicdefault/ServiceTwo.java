@@ -2,9 +2,11 @@ package at.gepardec.training.cdi.advanced.dynamicdefault;
 
 import at.gepardec.training.cdi.Util;
 
-import jakarta.enterprise.context.RequestScoped;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
-@RequestScoped
+@Component
+@RequestScope
 @ServiceTwoQualifier
 public class ServiceTwo implements Service {
 

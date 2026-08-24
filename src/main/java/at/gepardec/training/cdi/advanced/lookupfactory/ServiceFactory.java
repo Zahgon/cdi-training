@@ -1,49 +1,45 @@
 package at.gepardec.training.cdi.advanced.lookupfactory;
 
-import jakarta.annotation.PreDestroy;
-import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.inject.Any;
-import jakarta.enterprise.inject.Instance;
-import jakarta.enterprise.inject.spi.Bean;
-import jakarta.enterprise.inject.spi.BeanManager;
-import jakarta.inject.Inject;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The scope is important because of the @Dependent scoped beans we have to manage.
  * This bean lives as long as the owning bean, so take care its in the proper scope.
  */
-@Dependent
-public class ServiceFactory {
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class ServiceFactory implements DisposableBean {
 
-    @Inject
-    private BeanManager beanManager;
-
-    @Inject
-    @Any // Actually we select [@Any @TypedService] but it would be [@Default @TypedService] without @Any
-    private Instance<Service> serviceInstances;
+    @Autowired
+    private ConfigurableListableBeanFactory beanFactory;
 
     private final List<Service> dependentServiceInstances = new LinkedList<>();
 
     /**
      * Here we cleanup the dependent scoped beans to avoid a memory leak.
      */
-    @PreDestroy
-    void destroy() {
-        dependentServiceInstances.forEach(serviceInstances::destroy);
+    @Override
+    public void destroy() {
+        dependentServiceInstances.forEach(beanFactory::destroyBean);
     }
 
     /**
      * This is the factory method which resolves the bean and takes care about dependent instance handling
      */
     public Service forType(String type) {
-        final TypedService.TypedServiceLiteral literal = new TypedService.TypedServiceLiteral(
-                Objects.requireNonNull(type, "Type must be set")
-        );
-        final Service service = serviceInstances.select(literal).get();
+        final String literal = Objects.requireNonNull(type, "Type must be set");
+        final Service service = BeanFactoryAnnotationUtils.qualifiedBeanOfType(beanFactory, Service.class, literal);
         if (isDependentScoped(literal)) {
             dependentServiceInstances.add(service);
         }
@@ -53,14 +49,16 @@ public class ServiceFactory {
     /**
      * Here we get the bean definition from the CDI container and check what the scope of the implementation class is.
      */
-    private boolean isDependentScoped(TypedService literal) {
-        final Set<Bean<?>> beans = beanManager.getBeans(Service.class, literal);
+    private boolean isDependentScoped(String literal) {
+        final List<String> beans = Arrays.stream(beanFactory.getBeanNamesForType(Service.class))
+                .filter(literal::equals)
+                .toList();
         if (beans.size() == 1) {
-            return Dependent.class.isAssignableFrom(beans.iterator().next().getScope());
+            return beanFactory.getBeanDefinition(beans.get(0)).isPrototype();
         } else if (!beans.isEmpty()) {
-            throw new IllegalStateException("Found multiple beans for service class and annotation literal: " + literal.toString());
+            throw new IllegalStateException("Found multiple beans for service class and annotation literal: " + literal);
         } else {
-            throw new IllegalArgumentException("No beans found for Service interface and annotation literal: " + literal.toString());
+            throw new IllegalArgumentException("No beans found for Service interface and annotation literal: " + literal);
         }
     }
 }

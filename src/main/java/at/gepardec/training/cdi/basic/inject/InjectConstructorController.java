@@ -1,15 +1,16 @@
 package at.gepardec.training.cdi.basic.inject;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.mvc.Controller;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import at.gepardec.training.cdi.MvcApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
 /**
  * Here two things are wrong. Are you up to find them?
  */
-@Path("/basic/inject/constructor")
-@RequestScoped
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/basic/inject/constructor")
+@RequestScope
 @Controller
 public class InjectConstructorController {
 
@@ -25,10 +26,9 @@ public class InjectConstructorController {
         this.model = model;
     }
 
-    @GET
-    @Path("/")
+    @GetMapping({"", "/"})
     public String get() {
         model.setForView("Your name goes here aas well :)");
-        return "basic/inject-constructor.xhtml";
+        return "basic/inject-constructor";
     }
 }

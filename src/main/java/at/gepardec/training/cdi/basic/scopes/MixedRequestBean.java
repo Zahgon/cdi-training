@@ -1,10 +1,10 @@
 package at.gepardec.training.cdi.basic.scopes;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.SessionScoped;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 
-@ApplicationScoped
+@Component
 public class MixedRequestBean implements Serializable {
 
   private int value = 0;

@@ -1,10 +1,8 @@
 package at.gepardec.training.cdi;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Named;
+import org.springframework.stereotype.Component;
 
-@Named("cdiUri")
-@ApplicationScoped
+@Component("cdiUri")
 public class CdiUri {
 
     private static final String CDI_ORG_URI = "https://cdi-spec.org";

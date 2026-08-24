@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--@elvariable id="id" type="java.lang.String"-->
+<!--@elvariable id="path" type="java.lang.String"-->
+<!--@elvariable id="text" type="java.lang.String"-->
+<!--@elvariable id="target" type="java.lang.String"-->
+<!--@elvariable id="rendered" type="java.lang.Boolean"-->
+
+<a th:fragment="link(id, path, text, target, rendered)"
+   th:if="${rendered == null or rendered}"
+   th:id="${id}"
+   th:target="${target != null ? target : '_self'}"
+   th:href="${pathHelper.buildPath(path)}"
+   th:title="${pathHelper.buildPath(path)}"
+   th:text="${text}"></a>
+</body>
+</html>

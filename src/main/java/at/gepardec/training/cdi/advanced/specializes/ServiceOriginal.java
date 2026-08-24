@@ -2,12 +2,14 @@ package at.gepardec.training.cdi.advanced.specializes;
 
 import at.gepardec.training.cdi.Util;
 
-import jakarta.enterprise.context.RequestScoped;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 /**
  * That is the implementation we specialize
  */
-@RequestScoped
+@Component
+@RequestScope
 public class ServiceOriginal implements Service {
 
     @Override

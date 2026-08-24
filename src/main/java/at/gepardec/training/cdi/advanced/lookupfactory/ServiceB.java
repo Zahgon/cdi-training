@@ -3,9 +3,15 @@ package at.gepardec.training.cdi.advanced.lookupfactory;
 
 import at.gepardec.training.cdi.Util;
 
-import jakarta.enterprise.context.Dependent;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-@Dependent
+/**
+ * The bean name is the discriminator {@link ServiceFactory} resolves by, see {@link ServiceA}.
+ */
+@Component("B")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @TypedService("B")
 public class ServiceB implements Service {
 

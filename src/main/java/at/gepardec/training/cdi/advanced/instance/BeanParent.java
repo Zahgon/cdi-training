@@ -1,7 +1,9 @@
 package at.gepardec.training.cdi.advanced.instance;
 
-import jakarta.enterprise.context.RequestScoped;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
-@RequestScoped
+@Component
+@RequestScope
 public class BeanParent implements BeanInterfaceRoot {
 }

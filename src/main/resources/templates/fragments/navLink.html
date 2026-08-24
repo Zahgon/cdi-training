@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--@elvariable id="id" type="java.lang.String"-->
+<!--@elvariable id="path" type="java.lang.String"-->
+<!--@elvariable id="text" type="java.lang.String"-->
+<!--@elvariable id="target" type="java.lang.String"-->
+<!--@elvariable id="rendered" type="java.lang.Boolean"-->
+<!--@elvariable id="active" type="java.lang.Boolean"-->
+
+<div th:fragment="navLink(id, path, text, active, rendered)"
+     th:if="${rendered == null or rendered}"
+     class="nav-item">
+    <a th:id="${id}"
+       th:class="${'nav-link ' + (((active != null and active) or pathHelper.isOnPage(path)) ? 'active' : '')}"
+       th:attr="aria-current=${((active != null and active) or pathHelper.isOnPage(path)) ? 'page' : ''}"
+       th:href="${pathHelper.buildPath(path)}"
+       th:title="${pathHelper.buildPath(path)}"
+       th:text="${text}"></a>
+</div>
+</body>
+</html>

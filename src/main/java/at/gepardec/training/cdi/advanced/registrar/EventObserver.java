@@ -1,21 +1,28 @@
 package at.gepardec.training.cdi.advanced.registrar;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.ObservesAsync;
-import jakarta.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 /**
  * Just firing an event and forgetting it mostly not possible.
  * The registrar is the component which holds the results and can be accessed by other
  * CDI beans to evaluate the captured results.
  */
-@ApplicationScoped
+@Component("registrarEventObserver")
 public class EventObserver {
 
-    @Inject
+    @Autowired
     private EventResultRegistrar eventResultRegistrar;
 
-    void observe(@ObservesAsync EventData event) {
+    /**
+     * The method is public because {@code @Async} is applied by a proxy, which can only advise
+     * methods that are visible to it.
+     */
+    @Async
+    @EventListener
+    public void observe(EventData event) {
         if (event.fail) {
             eventResultRegistrar.registerFailedEvent(event.id);
         } else {

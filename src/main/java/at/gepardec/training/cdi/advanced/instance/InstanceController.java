@@ -1,50 +1,58 @@
 package at.gepardec.training.cdi.advanced.instance;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.enterprise.inject.Any;
-import jakarta.enterprise.inject.Default;
-import jakarta.enterprise.inject.Instance;
-import jakarta.enterprise.util.AnnotationLiteral;
-import jakarta.inject.Inject;
-import jakarta.mvc.Controller;
-import jakarta.mvc.Models;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import at.gepardec.training.cdi.Models;
+import at.gepardec.training.cdi.MvcApplication;
+
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 
-@RequestScoped
-@Path("/advanced/instance")
+@RequestScope
+@Controller
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/advanced/instance")
 public class InstanceController {
 
-    @Inject
+    @Autowired
     private Models models;
 
-    @Inject
-    private Instance<BeanInterfaceChild> beanInterfaceChildrenInstanceDefault;
+    /**
+     * The Spring counterpart of the CDI {@code BeanManager}, used for the programmatic lookup.
+     */
+    @Autowired
+    private ConfigurableListableBeanFactory beanFactory;
 
-    @Inject
-    @Any
-    private Instance<BeanInterfaceChild> beanInterfaceChildrenInstanceAny;
+    /**
+     * {@code @Default} stands in for the qualifier CDI applies implicitly to an unqualified
+     * injection point. Without it this provider streams {@code SecondBeanChild} too and the page
+     * shows the same two beans for {@code @Inject} as for {@code @Inject @Any}.
+     */
+    @Autowired
+    @Default
+    private ObjectProvider<BeanInterfaceChild> beanInterfaceChildrenInstanceDefault;
 
-    @Inject
+    @Autowired
+    private ObjectProvider<BeanInterfaceChild> beanInterfaceChildrenInstanceAny;
+
+    @Autowired
     @Second
-    private Instance<BeanInterfaceChild> beanInterfaceChildrenInstanceSecond;
+    private ObjectProvider<BeanInterfaceChild> beanInterfaceChildrenInstanceSecond;
 
-    @Inject
-    @Any
-    private Instance<BeanInterfaceRoot> beanInterfaceRootInstance;
+    @Autowired
+    private ObjectProvider<BeanInterfaceRoot> beanInterfaceRootInstance;
 
-    @Inject
-    @Any
-    private Instance<BeanParent> beanParentInstance;
+    @Autowired
+    private ObjectProvider<BeanParent> beanParentInstance;
 
-    @Controller
-    @GET
+    @GetMapping({"", "/"})
     public String get() {
         final Map<String, List<String>> data = new LinkedHashMap<>();
         fillInForTypeAndInstance(data, "@Inject @Any", BeanInterfaceRoot.class, beanInterfaceRootInstance);
@@ -54,16 +62,15 @@ public class InstanceController {
         fillInForTypeAndInstance(data, "@Inject @Second", BeanInterfaceChild.class, beanInterfaceChildrenInstanceSecond);
         fillInProgrammaticLookup(data);
         models.put("data", data);
-        return "advanced/instances.xhtml";
+        return "advanced/instances";
     }
 
     private void fillInProgrammaticLookup(Map<String, List<String>> data) {
-        data.put("instance.select(new AnnotationLiteral<Default>(){})", List.of(beanInterfaceChildrenInstanceAny.select(new AnnotationLiteral<Default>() {
-        }).get().getName()));
-        data.put("instance.select(new SecondLiteral())", List.of(beanInterfaceChildrenInstanceAny.select(new SecondLiteral()).get().getName()));
+        data.put("instance.select(new AnnotationLiteral<Default>(){})", List.of(beanInterfaceChildrenInstanceAny.getObject().getName()));
+        data.put("instance.select(new SecondLiteral())", List.of(new SecondLiteral().select(beanFactory).getName()));
     }
 
-    private <T extends BeanInterfaceRoot> void fillInForTypeAndInstance(Map<String, List<String>> data, final String annotations, final Class<T> clazz, final Instance<T> instance) {
+    private <T extends BeanInterfaceRoot> void fillInForTypeAndInstance(Map<String, List<String>> data, final String annotations, final Class<T> clazz, final ObjectProvider<T> instance) {
         final List<String> names = new LinkedList<>();
         instance.stream().forEach(bean -> names.add(bean.getName()));
         data.put(annotations + " Instance<" + clazz.getSimpleName() + ">", names);

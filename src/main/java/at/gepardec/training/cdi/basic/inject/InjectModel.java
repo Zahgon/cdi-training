@@ -1,13 +1,20 @@
 package at.gepardec.training.cdi.basic.inject;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import jakarta.mvc.Models;
+import at.gepardec.training.cdi.Models;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
-@RequestScoped
+/**
+ * Field injection is deliberate here: it leaves the implicit public no-arg constructor in
+ * place, so {@code new InjectModel()} still compiles for {@link InjectFieldController} and
+ * still yields an instance whose {@code models} reference is null.
+ */
+@Component
+@RequestScope
 public class InjectModel {
 
-    @Inject
+    @Autowired
     private Models models;
 
     public void setForView(String name) {

@@ -1,37 +1,39 @@
 package at.gepardec.training.cdi.basic.producers;
 
+import at.gepardec.training.cdi.Models;
+import at.gepardec.training.cdi.MvcApplication;
 import at.gepardec.training.cdi.Util;
 import at.gepardec.training.cdi.basic.qualifiers.Circle;
 import at.gepardec.training.cdi.basic.qualifiers.Rectangle;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import jakarta.mvc.Controller;
-import jakarta.mvc.Models;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
 import java.util.List;
 
-@Path("/basic/producers")
-@RequestScoped
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/basic/producers")
+@RequestScope
 @Controller
 public class ProducersController {
 
-    @Inject
+    @Autowired
     private Models model;
 
-    @Inject
+    @Autowired
+    @Qualifier("producedString")
     private String producedString;
 
-    @Inject
+    @Autowired
     private Logger logger;
 
-    @Inject
+    @Autowired
     private ProducedBean producedBean;
 
-    @GET
-    @Path("/")
+    @GetMapping({"", "/"})
     public String get() {
         // Here you put your produced lists in
         model.put("circleList", Util.namesWithInstanceId(List.of()));
@@ -40,6 +42,6 @@ public class ProducersController {
         model.put("producedString", producedString);
         model.put("producedBean", Util.nameWithInstanceId(producedBean));
 
-        return "basic/producers.xhtml";
+        return "basic/producers";
     }
 }

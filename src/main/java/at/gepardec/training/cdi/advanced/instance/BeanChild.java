@@ -1,9 +1,12 @@
 package at.gepardec.training.cdi.advanced.instance;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.enterprise.inject.Default;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 @Default
-@RequestScoped
+@Primary
+@Component
+@RequestScope
 public class BeanChild implements BeanInterfaceChild {
 }

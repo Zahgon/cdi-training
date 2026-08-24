@@ -1,41 +1,41 @@
 package at.gepardec.training.cdi.basic.scopes;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import jakarta.mvc.Controller;
-import jakarta.mvc.Models;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import at.gepardec.training.cdi.Models;
+import at.gepardec.training.cdi.MvcApplication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
 /**
  * Fix the scopes of the injected beans
  */
-@Path("/basic/scopes/basic")
-@RequestScoped
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/basic/scopes/basic")
+@RequestScope
 @Controller
 public class ScopesBasicController {
 
-    @Inject
+    @Autowired
     private Models model;
 
-    @Inject
+    @Autowired
     private RequestBean requestBean;
 
-    @Inject
+    @Autowired
     private SessionBean sessionBean;
 
-    @Inject
+    @Autowired
     private ApplicationBean applicationBean;
 
-    @GET
-    @Path("/")
+    @GetMapping({"", "/"})
     public String getBasic() {
         model.put("tabTitle", "Scopes Basic");
         model.put("requestValue", requestBean.incrementAndGet());
         model.put("sessionValue", sessionBean.incrementAndGet());
         model.put("applicationValue", applicationBean.incrementAndGet());
 
-        return "basic/scopes-basic.xhtml";
+        return "basic/scopes-basic";
     }
 
 }

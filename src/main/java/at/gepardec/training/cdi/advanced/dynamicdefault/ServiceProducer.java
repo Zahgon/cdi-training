@@ -1,34 +1,30 @@
 package at.gepardec.training.cdi.advanced.dynamicdefault;
 
 import org.slf4j.Logger;
-
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.enterprise.inject.Default;
-import jakarta.enterprise.inject.Produces;
-import jakarta.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * This producer is responsible for deciding what bean is returned for @Default annotated injection points.
  */
-@ApplicationScoped
+@Component
 public class ServiceProducer {
 
     /**
      * Here we get the A implementation
      */
-    @Inject
+    @Autowired
     @ServiceOneQualifier
     private Service serviceOne;
 
     /**
      * Here we get the B implementation
      */
-    @Inject
+    @Autowired
     @ServiceTwoQualifier
     private Service serviceTwo;
 
-    @Inject
+    @Autowired
     private Logger log;
 
     /**
@@ -39,10 +35,7 @@ public class ServiceProducer {
     /**
      * This is the @Default qualified Service bean implementation.
      */
-    @Produces
-    @RequestScoped
-    @Default
-    Service createService() {
+    public Service createService() {
         switch (implementationType) {
             case "ServiceOne":
                 log.info("ServiceOne is now default");

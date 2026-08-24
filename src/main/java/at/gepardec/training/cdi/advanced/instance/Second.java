@@ -1,6 +1,6 @@
 package at.gepardec.training.cdi.advanced.instance;
 
-import jakarta.inject.Qualifier;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.lang.annotation.*;
 

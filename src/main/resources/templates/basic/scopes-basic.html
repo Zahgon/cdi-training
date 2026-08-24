@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<!--@elvariable id="requestValue" type="java.lang.String"-->
+<!--@elvariable id="sessionValue" type="java.lang.String"-->
+<!--@elvariable id="applicationValue" type="java.lang.String"-->
+
+<head>
+    <title layout:fragment="title">
+        Scopes Basic
+    </title>
+</head>
+
+<body>
+<div layout:fragment="body">
+
+    <div class="container-lg">
+        <div class="row my-2">
+            <div class="col">
+                <div class="text-center">
+                    <h1>Scopes Basic</h1>
+                </div>
+            </div>
+
+            <hr class="my-3" />
+        </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <p>
+                    The specification for CDI
+                    <a th:href="${cdiUri.specUri + '#contexts'}"
+                        target="_blank">
+                        Scopes and Contexts
+                    </a>
+                </p>
+
+                <p>
+                    A main concept in CDI are contexts and scopes which define the lifetime of the CDI bean.
+                    All normal scoped CDI Beans are lazily instantiated on the first access within a scope and
+                    get automatically destroyed when the scope ends.
+                    CDI Beans can inject other CDI beans, no mather what scope the CDI Beans have.
+                    But there are consequences when CDI Beans of different scopes are mixed together.
+                </p>
+
+                <hr class="mt-3 mb-3" />
+
+                <h5>
+                    Your Task:
+                </h5>
+
+                <p>
+                    Fix the scopes of the beans in the package
+                    <code>at.gepardec.training.cdi.basic.scopes</code>
+                    and check the table below if it works
+                </p>
+                <p>
+                    We've a simple example here: each time you reload this page all counters get incremented. This will have different effects depending on the scopes in which the affected beans live.
+                    When your scopes are set properly, then you should see the values changing as described.
+                </p>
+
+                <div class="alert alert-info mt-2 mb-2" role="alert">
+                    <h5 class="alert-heading font-weight-bold">Important!!</h5>
+                    Ensure that you open a different browser to ensure different http sessions
+                </div>
+
+                <hr class="mt-3 mb-3" />
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                <div class="row my-1">
+                    <div class="col-6 mr-2 text-end">
+                        <span>I should never change</span>
+                    </div>
+                    <div class="col-6 ml-2 text-start">
+                        <span class="font-weight-bold" th:text="${requestValue}"></span>
+                    </div>
+                </div>
+
+                <div class="row my-1">
+                    <div class="col-6 mr-2 text-end">
+                        <span>I start new in a window</span>
+                    </div>
+                    <div class="col-6 ml-2 text-start">
+                        <span class="font-weight-bold" th:text="${sessionValue}"></span>
+                    </div>
+                </div>
+
+                <div class="row my-1">
+                    <div class="col-6 mr-2 text-end">
+                        <span>I should always change</span>
+                    </div>
+                    <div class="col-6 ml-2 text-start">
+                        <span class="font-weight-bold" th:text="${applicationValue}"></span>
+                    </div>
+                </div>
+
+                <hr class="my-3" />
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

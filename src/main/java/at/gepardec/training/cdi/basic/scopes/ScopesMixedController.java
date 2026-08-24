@@ -1,34 +1,34 @@
 package at.gepardec.training.cdi.basic.scopes;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import jakarta.mvc.Controller;
-import jakarta.mvc.Models;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import at.gepardec.training.cdi.Models;
+import at.gepardec.training.cdi.MvcApplication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
 /**
  * Fix the scopes of the injected beans, as well as the scopes of beans they inject
  */
-@Path("/basic/scopes/mixed")
-@RequestScoped
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/basic/scopes/mixed")
+@RequestScope
 @Controller
 public class ScopesMixedController {
 
-    @Inject
+    @Autowired
     private Models model;
 
-    @Inject
+    @Autowired
     private MixedApplicationBean mixedApplicationBean;
 
-    @GET
-    @Path("/")
+    @GetMapping({"", "/"})
     public String advanced() {
         model.put("tabTitle", "Mixed Scopes");
         model.put("requestValue", mixedApplicationBean.scopeMixSession().scopeMixRequest().incrementAndGet());
         model.put("sessionValue", mixedApplicationBean.scopeMixSession().incrementAndGet());
         model.put("applicationValue", mixedApplicationBean.incrementAndGet());
 
-        return "basic/scopes-mixed.xhtml";
+        return "basic/scopes-mixed";
     }
 }

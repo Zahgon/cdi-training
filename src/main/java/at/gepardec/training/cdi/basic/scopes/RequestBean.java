@@ -1,12 +1,12 @@
 package at.gepardec.training.cdi.basic.scopes;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@ApplicationScoped
+@Component
 public class RequestBean {
 
-    @Inject
+    @Autowired
     private DependentBean dependentBean;
 
     private int value = 0;

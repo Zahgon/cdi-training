@@ -1,36 +1,36 @@
 package at.gepardec.training.cdi.basic.scopes;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import jakarta.mvc.Controller;
-import jakarta.mvc.Models;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import at.gepardec.training.cdi.Models;
+import at.gepardec.training.cdi.MvcApplication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
-@Path("/basic/scopes/dependent")
-@RequestScoped
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/basic/scopes/dependent")
+@RequestScope
 @Controller
 public class ScopesDependentController {
 
-    @Inject
+    @Autowired
     private Models model;
 
-    @Inject
+    @Autowired
     private RequestBean requestBean;
 
-    @Inject
+    @Autowired
     private SessionBean sessionBean;
 
-    @Inject
+    @Autowired
     private ApplicationBean applicationBean;
 
-    @GET
-    @Path("/")
+    @GetMapping({"", "/"})
     public String dependent() {
         model.put("dependentBeanRequestScopedValue", requestBean.dependentBean().incrementAndGet());
         model.put("dependentBeanSessionScopedValue", sessionBean.dependentBean().incrementAndGet());
         model.put("dependentBeanApplicationScopedValue", applicationBean.dependentBean().incrementAndGet());
 
-        return "basic/scopes-dependent.xhtml";
+        return "basic/scopes-dependent";
     }
 }

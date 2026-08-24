@@ -1,14 +1,16 @@
 package at.gepardec.training.cdi.basic.decorators;
 
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-import jakarta.enterprise.context.Dependent;
-import jakarta.inject.Inject;
-
-@Dependent
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ServiceImpl implements ServiceApi {
 
-    @Inject
+    @Autowired
     private Logger log;
 
     @Override

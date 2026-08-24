@@ -2,14 +2,16 @@ package at.gepardec.training.cdi.advanced.alternatives;
 
 import at.gepardec.training.cdi.Util;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.enterprise.inject.Alternative;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 /**
  * This bean is the alternative implementation which is not enabled unless added to the beans.xml.
  */
-@RequestScoped
-@Alternative
+@Component
+@RequestScope
+@Primary
 public class ServiceDev implements Service {
 
     @Override

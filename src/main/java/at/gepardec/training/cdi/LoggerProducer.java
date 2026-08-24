@@ -1,39 +1,37 @@
 package at.gepardec.training.cdi;
 
+import java.lang.reflect.Member;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InjectionPoint;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.inject.Produces;
-import jakarta.enterprise.inject.spi.InjectionPoint;
-
-@ApplicationScoped
+@Configuration
 public class LoggerProducer {
 
     /**
-     * This is a producer method.
-     * If no scope is provided then the bean is produced for the @Dependent scope
-     * If no qualifier is provided then the @Default is used
+     * This is a factory method, the Spring counterpart of a CDI producer method.
+     * A prototype scope is required, otherwise the injection point would only be
+     * evaluated once for the whole context.
      *
-     * @param injectionPoint the injectionPoint only available for @Dependent scoped beans
+     * @param injectionPoint the injection point the logger is created for
      * @return the produced logger
      */
-    @Produces
-    @Dependent
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public Logger produceLogger(InjectionPoint injectionPoint) {
-        // There are some cases when this can be null, for instance with EJBs
-        if (injectionPoint.getBean() != null) {
-            return LoggerFactory.getLogger(injectionPoint.getBean().getBeanClass());
-        }
-        // Should not be null, but we want to be safe
-        else if (injectionPoint.getMember() != null) {
-            return LoggerFactory.getLogger(injectionPoint.getMember().getDeclaringClass());
+        // The field or constructor parameter the logger is injected into
+        final Member member = injectionPoint.getMember();
+        if (member != null) {
+            return LoggerFactory.getLogger(member.getDeclaringClass());
         }
         // In case we cannot determine declaring class
         else {
             return LoggerFactory.getLogger("default");
         }
     }
-
 }

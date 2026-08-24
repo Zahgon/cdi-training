@@ -1,7 +1,7 @@
 package at.gepardec.training.cdi.advanced.customscope;
 
 /**
- * The CDI bean for controlling the CDI context lifecycle.
+ * The bean for controlling the execution-context lifecycle.
  */
 public class ExecutionContextControllerImpl implements ExecutionContextController {
 

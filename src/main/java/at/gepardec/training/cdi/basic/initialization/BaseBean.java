@@ -1,8 +1,8 @@
 package at.gepardec.training.cdi.basic.initialization;
 
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import jakarta.inject.Inject;
 import java.io.Serializable;
 
 /**
@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public abstract class BaseBean implements Serializable {
 
-    @Inject
+    @Autowired
     private Logger log;
 
     public void logInit() {

@@ -1,25 +1,25 @@
 package at.gepardec.training.cdi.advanced.concurrency;
 
-import org.slf4j.Logger;
+import at.gepardec.training.cdi.Models;
+import at.gepardec.training.cdi.MvcApplication;
 
-import jakarta.annotation.Resource;
-import jakarta.enterprise.concurrent.ManagedExecutorService;
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import jakarta.mvc.Controller;
-import jakarta.mvc.Models;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
 /**
  * This controller triggers the concurrent execution of the Service bean by a GET request.
  */
-@Path("/advanced/concurrency")
-@RequestScoped
+@RequestMapping(MvcApplication.REST_APPLICATION_PATH + "/advanced/concurrency")
+@RequestScope
 @Controller
 public class ConcurrencyController {
 
-    @Inject
+    @Autowired
     private Logger log;
 
     /**
@@ -27,20 +27,19 @@ public class ConcurrencyController {
      * Therefore, we have no problems executing it on a different Thread.
      * But all injected CDI beans must be dependent or application scoped.
      */
-    @Inject
+    @Autowired
     private Service service;
 
-    @Resource
-    private ManagedExecutorService executorService;
+    @Autowired
+    private AsyncTaskExecutor executorService;
 
-    @Inject
+    @Autowired
     private Models model;
 
-    @Path("/")
-    @GET
+    @GetMapping({"", "/"})
     public String get() throws Exception {
         model.put("concurrentResult", executorService.submit(() -> service.execute()).get());
         model.put("controllerResult", Thread.currentThread().getId());
-        return "advanced/concurrency.xhtml";
+        return "advanced/concurrency";
     }
 }

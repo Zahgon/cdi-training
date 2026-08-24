@@ -1,7 +1,9 @@
 package at.gepardec.training.cdi.advanced.concurrency;
 
-import jakarta.enterprise.context.Dependent;
-import jakarta.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * This is bean is executed on another Thread and cannot have any dependency to beans outside the following scopes:
@@ -10,13 +12,14 @@ import jakarta.inject.Inject;
  *     <li>@Dependent         // Exists for the depending bean only</li>
  * </ol>
  */
-@Dependent
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Service {
 
     /**
      * Nevertheless that this is actually request scoped, it's actually not, because there is no proxy causing problems
      */
-    @Inject
+    @Autowired
     private Context config;
 
     public String execute() {
